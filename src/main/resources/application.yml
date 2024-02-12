@@ -1,0 +1,67 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+spring:
+  profiles:
+    active: dev
+  application:
+    name: atlasx-gateway
+
+app:
+  distance:
+    googleApiKey:
+
+# service names should match the gx-service-offering:name field in the ServiceOffering*.json files
+service-offerings:
+  services:
+    - name: ServiceOfferingExample
+      url: http://example.com
+    - name: ServiceOfferingExample2
+      url: http://example2.com
+
+internal-api-key: 1234567890
+
+atlas:
+  hkv:
+    bucket: atlas-hkv-example
+    region: eu-central-1
+
+  config:
+    domain: example.domain
+    signatory-key-alias: example-signatory
+    service-base-address: example.domain
+    self-sign-self-description: false
+    vc-group: example
+    auto-create-signatory-did: true
+    autostart-self-description-schedule: true
+    return-empty-self-description: true
+    catalogue-refresh-rate: 10
+    self-description-refresh-rate: 10
+
+springdoc:
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  writer-with-order-by-keys: true
+  writer-with-default-pretty-printer: true
+  swagger-ui:
+    tags-sorter: alpha
+    operations-sorter: method
+
+management:
+  health:
+    binders:
+      enabled: false
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+logging:
+  level:
+    id:
+      walt:
+        credentials:
+          w3c:
+            templates: ERROR
+
