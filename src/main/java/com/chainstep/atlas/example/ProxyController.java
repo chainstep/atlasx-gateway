@@ -49,8 +49,9 @@ public class ProxyController {
                     HttpStatus.BAD_REQUEST
             );
         }
+        String queryString = request.getQueryString();
+        String servicePath =  queryString != null ? (request.getServletPath() + "?" + queryString).replace("/proxy/" + serviceName, "") : request.getServletPath().replace("/proxy/" + serviceName, "");
 
-        String servicePath = (request.getServletPath() + "?" + request.getQueryString()).replace("/proxy/" + serviceName, "");
         URI uri = URI.create(String.format("%s%s", service.getUrl(), servicePath));
 
         HttpMethod httpMethod = HttpMethod.valueOf(request.getMethod());
