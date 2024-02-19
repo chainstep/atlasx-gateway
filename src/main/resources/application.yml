@@ -16,7 +16,7 @@ app:
 service-offerings:
   services:
     - name: ServiceOfferingExample
-      url: http://example.com
+      url: http://localhost:3000
     - name: ServiceOfferingExample2
       url: http://example2.com
 
@@ -28,16 +28,16 @@ atlas:
     region: eu-central-1
 
   config:
-    domain: example.domain
+    domain: 0301-195-155-161-249.ngrok-free.app
     signatory-key-alias: example-signatory
-    service-base-address: example.domain
+    service-base-address: https://0301-195-155-161-249.ngrok-free.app
     self-sign-self-description: false
     vc-group: example
     auto-create-signatory-did: true
     autostart-self-description-schedule: true
     return-empty-self-description: true
-    catalogue-refresh-rate: 10
-    self-description-refresh-rate: 10
+    catalogue-refresh-rate: 300
+    self-description-refresh-rate: 300
 
 springdoc:
   default-consumes-media-type: application/json
