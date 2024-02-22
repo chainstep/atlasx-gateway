@@ -74,8 +74,9 @@ public class AtlasConfiguration {
     public AtlasJwtConfigBuilder atlasJwtConfigBuilder() {
         PresentedBySubjectVerificationPolicy presentedPolicy = new PresentedBySubjectVerificationPolicy();
         GxCredentialSignedByAuthorityVerificationPolicy authorityVerificationPolicy = new GxCredentialSignedByAuthorityVerificationPolicy();
+        CustomPolicy customPolicy = new CustomPolicy();
         return configurer -> {
-            configurer.configure("/proxy").all(List.of(authorityVerificationPolicy, presentedPolicy));
+            configurer.configure("/proxy.*").all(List.of(authorityVerificationPolicy, presentedPolicy, customPolicy));
         };
     }
 }
