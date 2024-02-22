@@ -28,9 +28,9 @@ atlas:
     region: eu-central-1
 
   config:
-    domain: 0301-195-155-161-249.ngrok-free.app
+    domain: example.domain
     signatory-key-alias: example-signatory
-    service-base-address: https://0301-195-155-161-249.ngrok-free.app
+    service-base-address: https://example.domain
     self-sign-self-description: false
     vc-group: example
     auto-create-signatory-did: true

@@ -50,7 +50,7 @@ public class ProxyController {
             );
         }
         String queryString = request.getQueryString();
-        String servicePath =  queryString != null ? (request.getServletPath() + "?" + queryString).replace("/proxy/" + serviceName, "") : request.getServletPath().replace("/proxy/" + serviceName, "");
+        String servicePath = queryString != null ? (request.getServletPath() + "?" + queryString).replace("/proxy/" + serviceName, "") : request.getServletPath().replace("/proxy/" + serviceName, "");
 
         URI uri = URI.create(String.format("%s%s", service.getUrl(), servicePath));
 
@@ -71,10 +71,10 @@ public class ProxyController {
     @RequestMapping("/internal-proxy")
     public ResponseEntity<?> sendAuthorizedInternalProxyRequest(
             HttpServletRequest request, @Nullable @RequestBody Object body,
-            @RequestHeader(name = "X-Api-Key") String apiKey,
+            @RequestHeader(name = "X-Api-Key", required = false) String apiKey,
             @RequestHeader(name = "X-Service-Url") String serviceUrl
     ) {
-        if (!apiKey.equals(internalApiKey))
+        if (apiKey == null || !apiKey.equals(internalApiKey))
             return new ResponseEntity<>("X-Api-Key does not match", HttpStatus.UNAUTHORIZED);
 
         String serviceUri = String.format("%s", serviceUrl);
