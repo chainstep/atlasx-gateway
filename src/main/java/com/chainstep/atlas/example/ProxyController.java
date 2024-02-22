@@ -68,7 +68,7 @@ public class ProxyController {
         }
     }
 
-    @RequestMapping("/proxy-internal")
+    @RequestMapping("/internal-proxy")
     public ResponseEntity<?> sendAuthorizedInternalProxyRequest(
             HttpServletRequest request, @Nullable @RequestBody Object body,
             @RequestHeader(name = "X-Api-Key") String apiKey,
@@ -82,7 +82,7 @@ public class ProxyController {
 
         HttpMethod httpMethod = HttpMethod.valueOf(request.getMethod());
         String contentType = request.getContentType();
-        log.info(String.format("/proxy-internal, Request: %s %s", httpMethod, uri));
+        log.info(String.format("/internal-proxy, Request: %s %s", httpMethod, uri));
 
         HttpEntity<?> newHttpEntity = communicator.createHttpEntity(body, contentType != null ? MediaType.valueOf(contentType) : null, true);
         try {

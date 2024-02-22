@@ -40,7 +40,7 @@ Please note that the `/proxy` route requires an `Authorization` header generated
 
 This endpoint is meant to be reached from outside. Use case is shown in the diagrams.
 
-### /proxy-internal
+### /internal-proxy
 
 This controller, also defined in `ProxyController.java`, it works almost the same with some differences. It doesnt require Authorization header because it is meant to be only used in local network. This endpoint is only reachable from services that are deployed within the same network. 
 
@@ -56,6 +56,6 @@ Again, it clones the incoming request plus it generates a JWT using your VC in y
 
 1- Developer of Service 1 goes to the `https://<atlas-x-gateway-2-url>/gx/catalogue` or `https://<atlas-x-gateway-2-url>/gx/so` to find out the service offerings provided and it's swagger documentation. Decides to use ServiceOfferingService2.
 
-2- The developer adds a function to use ServiceOfferingService2 in Service1 with url `https://<atlas-x-gateway-1-url>/proxy-internal` and with header `X-Service-Url`: `https://<atlas-x-gateway-2-url>/proxy/ServiceOfferingService2/<path>?<query>`.
+2- The developer adds a function to use ServiceOfferingService2 in Service1 with url `https://<atlas-x-gateway-1-url>/internal-proxy` and with header `X-Service-Url`: `https://<atlas-x-gateway-2-url>/proxy/ServiceOfferingService2/<path>?<query>`.
 
 <img src="docs/usecase-diagram.png" alt="" />
