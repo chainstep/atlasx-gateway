@@ -1,6 +1,9 @@
 package com.chainstep.atlas.example;
 
+import com.cartrust.atlas.ssikit.AtlasCommunicator;
+import com.cartrust.atlas.ssikit.catalogue.AtlasCatalogue;
 import com.cartrust.atlas.ssikit.catalogue.AtlasCatalogueConfiguration;
+import com.cartrust.atlas.ssikit.catalogue.CataloguePublisher;
 import com.cartrust.atlas.ssikit.config.AtlasConfigProperties;
 import com.cartrust.atlas.ssikit.config.AtlasInitializer;
 import com.cartrust.atlas.ssikit.config.AtlasJwtConfigBuilder;
@@ -68,6 +71,20 @@ public class AtlasConfiguration {
                 templateService,
                 openApiAccessor,
                 mapper
+        );
+    }
+
+    public CataloguePublisher cataloguePublisher(
+            AtlasCatalogue catalogue,
+            AtlasConfigProperties configProperties,
+            AtlasCommunicator communicator,
+            ObjectMapper objectMapper
+    ) {
+        return new CataloguePublisher(
+                catalogue,
+                configProperties,
+                communicator,
+                objectMapper
         );
     }
     @Bean
