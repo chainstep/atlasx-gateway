@@ -36,5 +36,5 @@ build/
 .DS_Store
 *.zip
 waltid-ssikit
-hkv-example/**
+hkv-example/**/*
 !hkv-example/.gitkeep
