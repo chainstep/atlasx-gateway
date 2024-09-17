@@ -13,10 +13,7 @@ Refer to https://gitlab.com/atlas-x/example-service/-/blob/master/README.md for 
 Files to be modified to the intial setup:
 ```
 ATLAS-X-GATEWAY/
-│   pom.xml    
-│
-└───hkv-example
-│   │   .getkeep  
+│   pom.xml     
 │   │
 └───src/main/resources/
 │   │   application.yml
