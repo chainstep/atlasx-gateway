@@ -37,3 +37,4 @@ build/
 *.zip
 waltid-ssikit
 hkv-example/**
+!hkv-example/.gitkeep
