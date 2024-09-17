@@ -10,9 +10,32 @@ Refer to https://gitlab.com/atlas-x/example-service/-/blob/master/README.md for 
 
 ## Instructions
 
-After completing the standard setup for Atlas-X:
-
-- In application.yaml edit your service-offerings.services that are available in your ServiceOffering*.json files.
+Files to be modified to the intial setup:
+```
+ATLAS-X-GATEWAY/
+│   pom.xml    
+│
+└───hkv-example (This folder needs to be created in older versions)
+│   │   .getkeep  
+│   │
+└───src/main/resources/
+│   │   application.yml
+|   |
+│   |   └───vc-templates/
+|   |   | GaiaxCredentialSD.json
+```
+* pom.xml
+   * change the name of the docker image that could be generated in line 89 to what you want
+```xml
+                <configuration>
+                    <from>
+                        <image>amazoncorretto:21-alpine</image>
+                    </from>
+                    <to>
+                        <!-- Change here for the image name -->
+                        <image>roms-atlas-gateway-server</image>
+```
+* In application.yaml edit your service-offerings.services that are available in your ServiceOffering*.json files.
     ```yml
     # Service names should match the gx-service-offering:name field in the ServiceOffering*.json files as that is only how someone can figure what services you are offering 
     service-offerings:
@@ -24,10 +47,28 @@ After completing the standard setup for Atlas-X:
         - name: ServiceOfferingKubernetesExample
           url: http://my-service.my-namespace.svc.cluster.local
     ```
-- Include an 'internal-api-key' parameter within the application.yaml file to facilitate the authentication process for the internal-proxy endpoint.
+  *  Include an 'internal-api-key' parameter within the application.yaml file to facilitate the authentication process for the internal-proxy endpoint.
     ```yml
     internal-api-key: my-secret-key
     ```
+  * change also the config section:
+    ```yml
+     config:
+    domain: any.internet                                              # change here to your domain
+    signatory-key-alias: example-signatory
+    service-base-address: https://any.internet                        # change here to corresponding base URL of the service endpoit
+    self-sign-self-description: false
+    vc-group: example
+    auto-create-signatory-did: true
+    autostart-self-description-schedule: true
+    return-empty-self-description: true
+    catalogue-refresh-rate: 10                                        # change here to a smaller value for easier testing
+    self-description-refresh-rate: 10                                 # change here to a smaller value for easier testing
+    ```  
+* Modify the information towards your company in the GaiaxCredentialSD.json
+   * these information must not met the gaia-x specifications yet! Currently no compliance check is made!
+
+  
 ## Proxy Controller
 
 ### /proxy/{serviceName}/**
@@ -59,3 +100,19 @@ Again, it clones the incoming request plus it generates a JWT using your VC in y
 2- The developer adds a function to use ServiceOfferingService2 in Service1 with url `https://<atlas-x-gateway-1-url>/internal-proxy` and with header `X-Service-Url`: `https://<atlas-x-gateway-2-url>/proxy/ServiceOfferingService2/<path>?<query>`.
 
 <img src="docs/usecase-diagram.png" alt="" />
+
+## Troubleshooting
+ currently you need to create a empty folder "hvk-example" in the root directory of this project. This folder is needed to store the VC and Vp signed by the [Atlas-X authority](https://authority.atlas.cartrust.com/index.html) [https://authority.atlas.cartrust.com/index.html]
+
+## how to generate a docker image using VS Code
+* check out the repo and open in in VS CODE
+* install the following extensions:
+   * [Extension Pack for Java](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack)
+   * [Java](https://marketplace.visualstudio.com/items?itemName=Oracle.oracle-java)
+   * [Maven for Java](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-maven)
+*  to build the image got to the maven MAVEN at the bottom left and run the *dockerBuild* command
+    * MAVEN
+        * Plugins
+            * jib
+                * dockerBuild
+* this will generate a docker image on you machine with the name defined in the **pom.xml** (see section above)
