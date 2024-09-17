@@ -15,7 +15,7 @@ Files to be modified to the intial setup:
 ATLAS-X-GATEWAY/
 │   pom.xml    
 │
-└───hkv-example (This folder needs to be created in older versions)
+└───hkv-example
 │   │   .getkeep  
 │   │
 └───src/main/resources/
