@@ -8,6 +8,10 @@ AtlasX-Gateway developed based on the exemplar service found at https://gitlab.c
 This documentation will only show what has been added on top of the Atlas-X example service. 
 Refer to https://gitlab.com/atlas-x/example-service/-/blob/master/README.md for initial setup instructions and documentation.
 
+## Introduction using Docker
+
+For a quick start there is also an [Introduction using Docker](/docs/intro-docker.md)
+
 ## Instructions
 
 Files to be modified to the intial setup:
