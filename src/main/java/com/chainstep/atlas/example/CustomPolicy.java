@@ -10,6 +10,14 @@ public class CustomPolicy extends SimpleVerificationPolicy {
     public CustomPolicy() {
     }
 
+    public boolean getApplyToVC() {
+      return false;
+    }
+ 
+    public boolean getApplyToVP() {
+      return true;
+    }
+    
     @NotNull
     public String getDescription() {
         return "bla bla bla";
