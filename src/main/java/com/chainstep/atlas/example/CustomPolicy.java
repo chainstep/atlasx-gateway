@@ -115,7 +115,7 @@ public class CustomPolicy extends SimpleVerificationPolicy {
         if (!roleNumberNode.asText().equals(role)) {
             return false;
         }
-        return false;
+        return true;
     }
 
 }
