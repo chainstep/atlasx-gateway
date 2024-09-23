@@ -26,12 +26,12 @@ public class CustomPolicy extends SimpleVerificationPolicy {
         return "CustomPolicy checks your defined policies.";
     }
 
-    // Returns false if this policy does not apply to Verifiable Credentials (VCs)
+    // Should return false if this policy should not apply to Verifiable Credentials (VCs)
     public boolean getApplyToVC() {
         return false;
     }
 
-    // Returns true if this policy applies to Verifiable Presentations (VPs)
+    // Should return true if this policy should apply to Verifiable Presentations (VPs)
     public boolean getApplyToVP() {
         return true;
     }
@@ -57,19 +57,12 @@ public class CustomPolicy extends SimpleVerificationPolicy {
             JsonNode credentialNode = rootNode.get(0);
 
             // Check if the credential has the required legal registration number
-            if (isFromLegalRegistrationNumber(credentialNode, legalRegistrationNumString)) {
-                //log.info("isFromLegalRegistrationNumber true");
-            }
             if (!isFromLegalRegistrationNumber(credentialNode, legalRegistrationNumString)) {
                 log.info("isFromLegalRegistrationNumber: Given LRN has no access!");
-                return VerificationPolicyResult.Companion.failure(); // Fail if the legal registration number does not
-                                                                     // match
+                return VerificationPolicyResult.Companion.failure(); // Fail if the legal registration number does not match
             }
 
             // Check if the credential has the required role
-            if (isRole(credentialNode, roleToGrantAccessString)) {
-                //log.info("isRole true");
-            }
             if (!isRole(credentialNode, roleToGrantAccessString)) {
                 log.info("isRole: Given role has no access!");
                 return VerificationPolicyResult.Companion.failure(); // Fail if the role is not "remoteControl"
@@ -94,8 +87,6 @@ public class CustomPolicy extends SimpleVerificationPolicy {
                 .get("credentialSubject")
                 .get("legalRegistrationNumber");
 
-        //log.info("received legalRegistrationNumber  : " + legalRegistrationNumberNode.asText());
-
         if (!legalRegistrationNumberNode.asText().equals(legalRegistrationNumber)) {
             return false;
         } 
@@ -104,12 +95,9 @@ public class CustomPolicy extends SimpleVerificationPolicy {
 
     private boolean isRole(JsonNode jsonNode, String role) {
         // get to the legalRegistrationNumber field
-
         JsonNode roleNumberNode = jsonNode
                 .get("credentialSubject")
                 .get("role");
-
-        //log.info("received role  : " + roleNumberNode.asText());
 
         // Check if the role matches
         if (!roleNumberNode.asText().equals(role)) {
