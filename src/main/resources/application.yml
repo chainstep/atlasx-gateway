@@ -8,10 +8,6 @@ spring:
   application:
     name: atlasx-gateway
 
-app:
-  distance:
-    googleApiKey:
-
 # service names should match the gx-service-offering:name field in the ServiceOffering*.json files
 service-offerings:
   services:
@@ -23,10 +19,6 @@ service-offerings:
 internal-api-key: 1234567890
 
 atlas:
-  hkv:
-    bucket: atlas-hkv-example
-    region: eu-central-1
-
   config:
     domain: example.domain
     signatory-key-alias: example-signatory
@@ -48,15 +40,6 @@ springdoc:
     tags-sorter: alpha
     operations-sorter: method
 
-management:
-  health:
-    binders:
-      enabled: false
-  endpoint:
-    health:
-      show-details: always
-      probes:
-        enabled: true
 logging:
   level:
     id:
