@@ -46,7 +46,7 @@ public class ProxyController {
         if (service == null) {
             return new ResponseEntity<>(
                     "Service with name '" + serviceName + "' not found. Available services are: " + String.join(", ", services.getServiceNames()),
-                    HttpStatus.BAD_REQUEST
+                    HttpStatus.NOT_FOUND
             );
         }
         String queryString = request.getQueryString();
@@ -58,14 +58,7 @@ public class ProxyController {
         String contentType = request.getContentType();
         log.info(String.format("/proxy, Request: %s %s", httpMethod, uri));
 
-        HttpEntity<?> newHttpEntity = communicator.createHttpEntity(body, contentType != null ? MediaType.valueOf(contentType) : null, true);
-        try {
-            return communicator.exchange(httpMethod, newHttpEntity, uri, String.class);
-        } catch (HttpClientErrorException e) {
-            return new ResponseEntity<>(e.getResponseBodyAsString(), e.getStatusCode());
-        } catch (Exception e) {
-            throw new RuntimeException("Unexpected error occurred", e);
-        }
+        return getResponseEntity(body, uri, httpMethod, contentType);
     }
 
     @RequestMapping("/internal-proxy")
@@ -84,6 +77,11 @@ public class ProxyController {
         String contentType = request.getContentType();
         log.info(String.format("/internal-proxy, Request: %s %s", httpMethod, uri));
 
+        return getResponseEntity(body, uri, httpMethod, contentType);
+
+    }
+
+    private ResponseEntity<?> getResponseEntity(@RequestBody @Nullable Object body, URI uri, HttpMethod httpMethod, String contentType) {
         HttpEntity<?> newHttpEntity = communicator.createHttpEntity(body, contentType != null ? MediaType.valueOf(contentType) : null, true);
         try {
             return communicator.exchange(httpMethod, newHttpEntity, uri, String.class);
@@ -92,11 +90,15 @@ public class ProxyController {
         } catch (Exception e) {
             throw new RuntimeException("Unexpected error occurred", e);
         }
-
     }
 
     private boolean isAuthenticated(HttpServletRequest request) {
-        String jwt = request.getHeader("Authorization").replace("Bearer ", "");
+        var authorization = request.getHeader("Authorization");
+        if (authorization == null) {
+            return false;
+        }
+
+        String jwt = authorization.replace("Bearer ", "");
         try {
             JwtVerificationResult verificationResult = AtlasJwtService.Companion.getService().verify(jwt);
             if (!verificationResult.getVerified())

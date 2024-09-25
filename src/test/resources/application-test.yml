@@ -1,0 +1,32 @@
+server:
+  port: 8181
+
+atlas:
+  config:
+    domain: localhost
+    service-base-address: http://localhost:8181
+    auto-create-signatory-did: false
+    autostart-self-description-schedule: false
+    return-empty-self-description: false
+    policySignatureEnabled: false
+    policySignedPresentationCredentialsEnabled: false
+    policyIssuedDateEnabled: false
+    policyValidFromEnabled: false
+    policyExpirationEnabled: false
+
+service-offerings:
+  services:
+    - name: ExampleServiceOffering1
+      url: http://localhost:8181/offering/greeting
+    - name: ExampleServiceOffering2
+      url: http://localhost:8181/offering/greeting
+
+policies:
+  custompolicy:
+    admin_role_policy:
+      legalRegistrationNumber: 0815
+      roleToGrantAccess: ADMIN
+
+routes:
+  ExampleServiceOffering2:
+    - admin_role_policy
