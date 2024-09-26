@@ -48,24 +48,55 @@ ATLAS-X-GATEWAY/
         - name: ServiceOfferingKubernetesExample
           url: http://my-service.my-namespace.svc.cluster.local
     ```
-  *  Include an 'internal-api-key' parameter within the application.yaml file to facilitate the authentication process for the internal-proxy endpoint.
+* Additional CustomPolicy instances can be added that check for Legal Registration Number and Role of a consumer. 
+  The following configuration checks if the consumer that requests a service is from a company with 
+  Legal Registration Number 0815 and has the role ADMIN:
+  ```yml
+  policies:
+    custompolicy:
+      admin_role_policy:
+        legalRegistrationNumber: 0815
+        roleToGrantAccess: ADMIN
+  ```
+  Policies and CustomPolicy instances and be added to a service route to check the credentials of incoming requests. 
+  In the following example, a route for ServiceOfferingExample2 from above is created with the policy admin_role_policy  
+  created above:
+  ```yml
+  routes:
+    ExampleServiceOffering2:
+      - admin_role_policy
+  ```
+  The admin_role_policy was configured above. But there are also default policies that can be used in routes without  
+  configuration.
+  The default policies are:
+  
+  | Name | Description                                                           |
+  | ---- |-----------------------------------------------------------------------|
+  | signatureVerificationPolicy | Verify signature of VC and VP. Containing VCs of VP are not verified. |
+  | presentationCredentialsSignedPolicy | Checks if all presented credentials are signed.                       |
+  | vcSchemaPolicy | Policy to check JSON-LD schema.                                       |
+  | credentialRoleVerificationPolicy | Verify roles to be present (works with Gaia-X credentials only). |
+
+  
+  
+*  Include an 'internal-api-key' parameter within the application.yaml file to facilitate the authentication process for the internal-proxy endpoint.
     ```yml
     internal-api-key: my-secret-key
     ```
-  * change also the config section:
-    ```yml
-     config:
-    domain: any.internet                                              # change here to your domain
-    signatory-key-alias: example-signatory
-    service-base-address: https://any.internet                        # change here to corresponding base URL of the service endpoit
-    self-sign-self-description: false
-    vc-group: example
-    auto-create-signatory-did: true
-    autostart-self-description-schedule: true
-    return-empty-self-description: true
-    catalogue-refresh-rate: 10                                        # change here to a smaller value for easier testing
-    self-description-refresh-rate: 10                                 # change here to a smaller value for easier testing
-    ```  
+* change also the config section:
+  ```yml
+   config:
+  domain: any.internet                                              # change here to your domain
+  signatory-key-alias: example-signatory
+  service-base-address: https://any.internet                        # change here to corresponding base URL of the service endpoit
+  self-sign-self-description: false
+  vc-group: example
+  auto-create-signatory-did: true
+  autostart-self-description-schedule: true
+  return-empty-self-description: true
+  catalogue-refresh-rate: 10                                        # change here to a smaller value for easier testing
+  self-description-refresh-rate: 10                                 # change here to a smaller value for easier testing
+  ```  
 * Modify the information towards your company in the GaiaxCredentialSD.json
    * these information must not met the gaia-x specifications yet! Currently no compliance check is made!
 

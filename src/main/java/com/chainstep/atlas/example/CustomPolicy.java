@@ -1,24 +1,22 @@
 package com.chainstep.atlas.example;
 
-import id.walt.auditor.SimpleVerificationPolicy;
-import id.walt.auditor.VerificationPolicyResult;
-import id.walt.credentials.w3c.VerifiableCredential;
-import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import id.walt.auditor.SimpleVerificationPolicy;
+import id.walt.auditor.VerificationPolicyResult;
+import id.walt.credentials.w3c.VerifiableCredential;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 
 @Slf4j
+@Setter
 public class CustomPolicy extends SimpleVerificationPolicy {
-    // Constructor - initializes CustomPolicy
-    public CustomPolicy() {
-    }
 
-    // TODO: Please change these Values to define which role of which company is
-    // allowed to access yor service.
-    private String legalRegistrationNumString = "DummyLRN";
-    private String roleToGrantAccessString = "DummyRole";
+    String legalRegistrationNumber;
+
+    String roleToGrantAccess;
 
     // Method to return a description of the policy
     @NotNull
@@ -57,13 +55,13 @@ public class CustomPolicy extends SimpleVerificationPolicy {
             JsonNode credentialNode = rootNode.get(0);
 
             // Check if the credential has the required legal registration number
-            if (!isFromLegalRegistrationNumber(credentialNode, legalRegistrationNumString)) {
+            if (!isFromLegalRegistrationNumber(credentialNode, legalRegistrationNumber)) {
                 log.info("isFromLegalRegistrationNumber: Given LRN has no access!");
                 return VerificationPolicyResult.Companion.failure(); // Fail if the legal registration number does not match
             }
 
             // Check if the credential has the required role
-            if (!isRole(credentialNode, roleToGrantAccessString)) {
+            if (!isRole(credentialNode, roleToGrantAccess)) {
                 log.info("isRole: Given role has no access!");
                 return VerificationPolicyResult.Companion.failure(); // Fail if the role is not "remoteControl"
             }
@@ -73,7 +71,7 @@ public class CustomPolicy extends SimpleVerificationPolicy {
             return VerificationPolicyResult.Companion.success();
 
         } catch (Exception e) {
-            log.info("Error during parsing the credential subject" + e);
+            log.info("Error during parsing the credential subject: {}", e.getMessage());
             return VerificationPolicyResult.Companion.failure(new Exception("parsing Error in the CustomPolicy"));
         }
 
@@ -87,10 +85,7 @@ public class CustomPolicy extends SimpleVerificationPolicy {
                 .get("credentialSubject")
                 .get("legalRegistrationNumber");
 
-        if (!legalRegistrationNumberNode.asText().equals(legalRegistrationNumber)) {
-            return false;
-        } 
-        return true;        
+        return legalRegistrationNumberNode.asText().equals(legalRegistrationNumber);
     }
 
     private boolean isRole(JsonNode jsonNode, String role) {
@@ -100,10 +95,7 @@ public class CustomPolicy extends SimpleVerificationPolicy {
                 .get("role");
 
         // Check if the role matches
-        if (!roleNumberNode.asText().equals(role)) {
-            return false;
-        }
-        return true;
+        return roleNumberNode.asText().equals(role);
     }
 
 }
