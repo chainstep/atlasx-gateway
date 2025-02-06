@@ -129,7 +129,7 @@ Again, it clones the incoming request plus it generates a JWT using your VC in y
 
 1- Developer of Service 1 goes to the `https://<atlas-x-gateway-2-url>/gx/catalogue` or `https://<atlas-x-gateway-2-url>/gx/so` to find out the service offerings provided and it's swagger documentation. Decides to use ServiceOfferingService2.
 
-2- The developer adds a function to use ServiceOfferingService2 in Service1 with url `https://<atlas-x-gateway-1-url>/internal-proxy` and with header `X-Service-Url`: `https://<atlas-x-gateway-2-url>/proxy/ServiceOfferingService2/<path>?<query>`.
+2- The developer adds a function to use ServiceOfferingService2 in Service1 with url `https://<atlas-x-gateway-1-url>/internal-proxy` and with header `X-Service-Url`: `https://<atlas-x-gateway-2-url>/proxy/ServiceOfferingService2/<path>?<query>` and `x-api-key`: `1234567890`.
 
 <img src="docs/usecase-diagram.png" alt="" />
 
